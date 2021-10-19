@@ -1,0 +1,32 @@
+{% extends 'PlanDirectApp/base.html' %}
+{% load static %}
+
+{% block content %}
+<form action="{% url 'PlanDirectApp:new_entry' %}" method="POST">
+    {%csrf_token%}
+    <div>
+        <label for="user" ></label>
+        <div >
+            <input type="text"  value="{{ user }}">
+        </div>
+        <div>
+            <a href="{% url 'PlanDirectUser:login_user' %}">Login</a>
+            <a href="{% url 'PlanDirectUser:new_user' %}">New User?</a>
+        </div>
+    </div>
+    <div>
+        <label for="post" >Put your thougths down here:</label>
+        <div>
+            <input type="text" name="entry" id="entry">
+        </div>
+        <div>
+            <button type="submit">Save Entry</button>
+        </div>
+    </div>
+</form>
+<v-container>
+    {% for entry in entries%}
+    <div>{{ entry }}</div>
+    {% endfor %}
+</v-container>
+{% endblock %}

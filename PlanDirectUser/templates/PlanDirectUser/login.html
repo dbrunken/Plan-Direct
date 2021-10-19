@@ -1,0 +1,14 @@
+<form action="{% url 'PlanDirectUser:login_user' %}" method="POST">
+    {% csrf_token %}
+    <div>
+        <div class="mb-3">
+            <label for="username">Enter Username</label>
+            <input type="text" class="form-control" name="username" id="username">
+        </div>
+        < class="mb-3">
+            <label for="password" class="form-label">Enter Password</label>
+            <input class="form-control" id="password" name="password"></input>
+        </div>
+        <button type="submit">Login</button>
+    </div>
+</form>
