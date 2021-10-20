@@ -6,3 +6,8 @@
 v-row {
     border: .2rem solid black;
 } */
+
+.nav {
+    position: absolute;
+    left: 0;
+}
