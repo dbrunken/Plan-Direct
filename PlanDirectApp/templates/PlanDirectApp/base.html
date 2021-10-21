@@ -85,6 +85,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         new Vue({
             el: '#app',
@@ -115,12 +116,32 @@
             }),
             mounted() {
                 this.$refs.calendar.checkChange()
+                this.calendar.getVisibleEvent()
             },
             methods: {
                 viewDay(event) {
                     this.focus = event.date
                     this.type = 'day'
                     console.log('you clicked on a date, here is the event ', {event})
+                },
+                get_tasks () {
+                    axios({
+                        method: 'GET',
+                        url: 'get_tasks/'
+                    }).then(response => {
+                        console.log(this.events)
+                        const tasks = response.data.tasks
+                        tasks.forEach(task => {
+                            task.name = task.task
+                            task.color = "pink"
+                            task.start = new Date(task.start)
+                        })
+                        this.events = tasks
+                        console.log(this.events)
+                    })
+                },
+                editEvent(ev) {
+                    this.currentlyEditing = ev.id;
                 },
                 getEventColor(event) {
                     return event.color
@@ -162,6 +183,9 @@
                     return Math.floor((b - a + 1) * Math.random()) + a
                 },
             },
+            created() {
+                this.get_tasks()
+            }
         })
     </script>
 

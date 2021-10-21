@@ -36,6 +36,7 @@
     <v-col>
         <v-sheet height="64">
             <v-toolbar flat>
+                <v-btn outlined class="mr-4" color="primary" @click="dialog = true" dark>New Task</v-btn>
                 <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
                     Today
                 </v-btn>
@@ -79,6 +80,20 @@
                 </v-menu>
             </v-toolbar>
         </v-sheet>
+
+        <!-- Event Dialog box -->
+        <v-dialog v-model="dialog" max-width="500">
+            <v-card>
+                <v-container>
+                    <v-form @submit.prevent="addEvent">
+                        <v-text-field>
+                            
+                        </v-text-field>
+                    </v-form>
+                </v-container>
+            </v-card>
+        </v-dialog>
+
         <v-sheet height="600">
             <v-calendar ref="calendar" v-model="focus" color="primary" :events="events"
                 :event-color="getEventColor" :type="type" @click:event="showEvent"
@@ -88,15 +103,36 @@
                 :activator="selectedElement" offset-x>
                 <v-card color="grey lighten-4" min-width="350px" flat>
                     <v-toolbar :color="selectedEvent.color" dark>
+                        <v-btn @click="deleteEvent(selectedEvent.id)" icon>
+                            <v-icon>mdi-delete</v-icon>
+                        </v-btn>
                         <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                         <v-spacer></v-spacer>
                     </v-toolbar>
                     <v-card-text>
-                        <span v-html="selectedEvent.details"></span>
+                        <form v-if="currentlyEditing !== selectedEvent.id">
+                            {{ selectedEvent.details}}
+                        </form>
+                        <form v-else>
+                            <textarea-autosize>
+                                v-model="selectedEvent.details"
+                                type="text"
+                                style="width: 100%"
+                                :min-height="100"
+                                placeholder="add note"
+                            </textareals-autosize>
+                        </form>
                     </v-card-text>
                     <v-card-actions>
                         <v-btn text color="secondary" @click="selectedOpen = false">
                             Close
+                        </v-btn>
+                        <v-btn text v-if="currentlyEditing !== selectedEvent.id"
+                        @click.prevent="editEvent(selectedEvent)">
+                            Edit
+                        </v-btn>
+                        <v-btn text v-else @click.prevent="updateEvent(selectedEvent)">
+                            Save
                         </v-btn>
                     </v-card-actions>
                 </v-card>

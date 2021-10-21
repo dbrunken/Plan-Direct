@@ -29,6 +29,7 @@ def new_entry(request):
         )
         return redirect('PlanDirectApp:index')
 
+
 @login_required
 def new_task(request):
     if request.method == 'POST':
@@ -36,22 +37,25 @@ def new_task(request):
         toDo.objects.create(
             new_task=task
         )
-    def get_tasks(request):
-        task_objects = toDo.objects.all()
-        tasks = []
-        for task_object in task_objects:
-            task = {
-                'id' : task_object.id,
-                'task' : task_object.task,
-                'date_added' : task_object.date_added,
-                'completed' : task_object.completed
-            }
-            tasks.append(task)
-        data = {
-            'tasks' : tasks
+
+
+def get_tasks(request):
+    task_objects = toDo.objects.all()
+    tasks = []
+    for task_object in task_objects:
+        task = {
+            'id' : task_object.id,
+            'task' : task_object.task,
+            'details' : task_object.details,
+            'start' : task_object.date_added,
+            'completed' : task_object.completed
         }
-        return JsonResponse(data)
-        
+        tasks.append(task)
+    data = {
+        'tasks' : tasks
+    }
+    return JsonResponse(data)
+
 
 def covert_localtime(utctime):
     fmt = '%Y-%M-%D %T'

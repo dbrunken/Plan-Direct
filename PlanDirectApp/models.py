@@ -13,6 +13,7 @@ class Entry(models.Model):
 
 class toDo(models.Model):
     task = models.CharField('Task', max_length=100)
+    details = models.CharField('Details', max_length=250)
     date_added = models.DateTimeField('Date added',auto_now_add=True)
     completed = models.BooleanField('Done?', default=False)
     
