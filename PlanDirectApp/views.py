@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_list_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
@@ -65,12 +65,21 @@ def get_tasks(request):
     return JsonResponse(data)
 
 @login_required
-def update_task(request):
-    # pete comment: def update_task(request, id)
+def update_task(request, id):
     if request.method == 'POST':
         data = json.loads(request.body)
-        toDo.objects.update(details=data.update('details'))
-    return HttpResponse('Task Updated')
+        print(data)
+        todo = toDo.objects.get(id=id)
+        todo.details = data.get('details')
+        todo.save()
+        # toDo.objects.update(details=data.get('details'))
+    return HttpResponse('task updated')
+
+@login_required
+def delete_task(request, id):
+    task = get_list_or_404(toDo, id=id)
+    task.delete()
+    return HttpResponse('task deleted')
 
 def covert_localtime(utctime):
     fmt = '%Y-%M-%D %T'

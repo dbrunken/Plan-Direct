@@ -14,7 +14,7 @@ def login_user(request):
             login(request,user)
             return redirect('PlanDirectApp:index')
 
-        return render(request, 'PlanDirectUser/login.html')
+    return render(request, 'PlanDirectUser/login.html')
 
 def logout_user(request):
     logout(request)

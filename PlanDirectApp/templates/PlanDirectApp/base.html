@@ -158,20 +158,35 @@
                 editEvent(ev) {
                     this.currentlyEditing = ev.id;
                 },
-                // updateEvent() {
-                //     axios({
-                //         method: 'POST',
-                //         url: 'update_task/',
-                // pete comment urls will look like 'update_task/1', 'update_task/2', etc...
-                //         data: {
-                //             details: this.details
-                //         },
-                //         headers: {
-                //             'X-CSRFToken': this.csrfmiddlewaretoken
-                //         }
-                //     }).then(response => console.log(response))
-                //     .catch(err => console.log(err))
-                // },
+                updateEvent(selectedEvent) {
+                    console.log(selectedEvent)
+                    axios({
+                        method: 'POST',
+                        url: `/update_task/${selectedEvent.id}`,
+                        // url: 'update_task/' + selectedEvent.id,
+                        data: {
+                            id: this.id,
+                            details: selectedEvent.details
+                        },
+                        headers: {
+                            'X-CSRFToken': this.csrfmiddlewaretoken
+                        }
+                    }).then(response => console.log(response))
+                    .catch(err => console.log(err))
+                },
+                deleteEvent(selectedEvent) {
+                    axios({
+                        method: 'POST',
+                        url: `/delete_task/${selectedEvent.id}`,
+                        data: {
+                            id: this.id
+                        },
+                        headers: {
+                            'X-CSRFToken': this.csrfmiddlewaretoken
+                        }
+                    }).then(response => console.log(response))
+                    .catch(err => console.log(err))
+                },
                 getEventColor(event) {
                     return event.color
                 },
