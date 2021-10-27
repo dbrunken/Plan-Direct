@@ -80,15 +80,19 @@
                 </v-menu>
             </v-toolbar>
         </v-sheet>
+        {% csrf_token %}
 
         <!-- Event Dialog box -->
         <v-dialog v-model="dialog" max-width="500">
             <v-card>
                 <v-container>
-                    <v-form @submit.prevent="addEvent">
-                        <v-text-field>
-                            
-                        </v-text-field>
+                    <v-form @submit.prevent="addTask">
+                        <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
+                        <v-text-field v-model="details" type="text" label="details"></v-text-field>
+                        <v-text-field v-model="start" type="date" label="start (required)"></v-text-field>
+                        <v-text-field v-model="end" type="date" label="end (required)"></v-text-field>
+                        <v-text-field v-model="color" type="color" label="color (click for a color wheel)"></v-text-field>
+                        <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog=false">Submit</v-btn>
                     </v-form>
                 </v-container>
             </v-card>
@@ -111,16 +115,16 @@
                     </v-toolbar>
                     <v-card-text>
                         <form v-if="currentlyEditing !== selectedEvent.id">
-                            {{ selectedEvent.details}}
+                            [[ selectedEvent.details ]]
                         </form>
                         <form v-else>
-                            <textarea-autosize>
+                            <textarea-autosize
                                 v-model="selectedEvent.details"
                                 type="text"
                                 style="width: 100%"
                                 :min-height="100"
-                                placeholder="add note"
-                            </textareals-autosize>
+                                placeholder="add note">
+                            </textarea-autosize>
                         </form>
                     </v-card-text>
                     <v-card-actions>

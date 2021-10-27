@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from datetime import datetime
 import pytz
+import json
 
 from .models import Entry, toDo
 
@@ -33,10 +34,16 @@ def new_entry(request):
 @login_required
 def new_task(request):
     if request.method == 'POST':
-        task = request.POST.get('task')
+        data = json.loads(request.body)
+        # task = request.POST.get('task')
+
         toDo.objects.create(
-            new_task=task
+            task=data.get('task'),
+            details=data.get('details'),
+            start=data.get('start'),
+            color=data.get('color')
         )
+    return HttpResponse('Added Task')
 
 
 def get_tasks(request):
@@ -47,8 +54,9 @@ def get_tasks(request):
             'id' : task_object.id,
             'task' : task_object.task,
             'details' : task_object.details,
-            'start' : task_object.date_added,
-            'completed' : task_object.completed
+            'start' : task_object.start,
+            'completed' : task_object.completed,
+            'color' : task_object.color,
         }
         tasks.append(task)
     data = {
@@ -56,6 +64,13 @@ def get_tasks(request):
     }
     return JsonResponse(data)
 
+@login_required
+def update_task(request):
+    # pete comment: def update_task(request, id)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        toDo.objects.update(details=data.update('details'))
+    return HttpResponse('Task Updated')
 
 def covert_localtime(utctime):
     fmt = '%Y-%M-%D %T'

@@ -104,25 +104,25 @@
                 selectedEvent: {},
                 selectedElement: null,
                 selectedOpen: false,
-                events: [
-                    {
-                        name: 'workin on capstone',
-                        color: 'green',
-                        start: Date.now()
-                    }
-                ],
-                colors: [],
-                names: [],
+                events: [],
+                color: '',
+                name: '',
+                details: '',
+                start: '',
+                end: '',
+                dialog: false,
+                currentlyEditing: false,
+                csrfmiddlewaretoken:'',
             }),
             mounted() {
                 this.$refs.calendar.checkChange()
-                this.calendar.getVisibleEvent()
+                this.csrfmiddlewaretoken=document.querySelector('input[name="csrfmiddlewaretoken"]').value
             },
             methods: {
                 viewDay(event) {
                     this.focus = event.date
                     this.type = 'day'
-                    console.log('you clicked on a date, here is the event ', {event})
+                    
                 },
                 get_tasks () {
                     axios({
@@ -132,17 +132,46 @@
                         console.log(this.events)
                         const tasks = response.data.tasks
                         tasks.forEach(task => {
-                            task.name = task.task
-                            task.color = "pink"
+                            task.name = task.task,
                             task.start = new Date(task.start)
                         })
                         this.events = tasks
                         console.log(this.events)
                     })
                 },
+                addTask() {
+                    axios({
+                        method: 'POST',
+                        url: 'new_task/',
+                        data: {
+							task: this.name,
+                            details: this.details,
+                            start: this.start,
+                            color: this.color
+						},
+						headers: {
+							'X-CSRFToken': this.csrfmiddlewaretoken
+						}
+					}).then(response => this.get_tasks())
+					.catch(err => console.log(err))
+                },
                 editEvent(ev) {
                     this.currentlyEditing = ev.id;
                 },
+                // updateEvent() {
+                //     axios({
+                //         method: 'POST',
+                //         url: 'update_task/',
+                // pete comment urls will look like 'update_task/1', 'update_task/2', etc...
+                //         data: {
+                //             details: this.details
+                //         },
+                //         headers: {
+                //             'X-CSRFToken': this.csrfmiddlewaretoken
+                //         }
+                //     }).then(response => console.log(response))
+                //     .catch(err => console.log(err))
+                // },
                 getEventColor(event) {
                     return event.color
                 },
@@ -182,6 +211,14 @@
                 rnd(a, b) {
                     return Math.floor((b - a + 1) * Math.random()) + a
                 },
+                getRandomColor() {
+                    var letters = '0123456789ABCDEF';
+                    let color = '#';
+                    for (var i = 0; i<6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color
+                }
             },
             created() {
                 this.get_tasks()
