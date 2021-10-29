@@ -30,6 +30,7 @@ User can also click on 'notes' button above list page, to add notes such as numb
     - user input text space
     - auto add date-time
     - add multiple entries
+    - store and show old entries on history page
 3. Calendar
     - show monthly Calendar
     - select day for tasks and notes
@@ -57,7 +58,8 @@ User can also click on 'notes' button above list page, to add notes such as numb
 
 ###Week 3
 - CSS
-- Import Geolocator API and work functionality
+- Finish Calendar functionality
+- Add history page
 - clean bugs
 
 ###Week 4

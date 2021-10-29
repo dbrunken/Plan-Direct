@@ -30,6 +30,13 @@ def new_entry(request):
         )
         return redirect('PlanDirectApp:index')
 
+@login_required
+def history(request):
+    entries = Entry.objects.order_by('-created_date')
+    context = {
+        'entries': entries
+    }
+    return render(request, 'PlanDirectApp/history.html', context)
 
 @login_required
 def new_task(request):
@@ -77,7 +84,7 @@ def update_task(request, id):
 
 @login_required
 def delete_task(request, id):
-    task = get_list_or_404(toDo, id=id)
+    task = toDo.objects.get(id=id)
     task.delete()
     return HttpResponse('task deleted')
 
