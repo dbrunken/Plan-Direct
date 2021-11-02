@@ -30,8 +30,11 @@ def new_entry(request):
         )
         return redirect('PlanDirectApp:index')
 
-@login_required
 def history(request):
+    pass # render your history template
+
+@login_required
+def get_history(request):
     entry_objects = Entry.objects.all()
     entries = []
     for entry_object in entry_objects:

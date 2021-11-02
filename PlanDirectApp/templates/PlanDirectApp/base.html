@@ -27,8 +27,8 @@
         <div id="app">
             <v-app>
                 <div>
-                    <div>
-                        <v-container>
+                    <div class="d-flex justify-center">
+                        <v-container class="main ma-0" id="main-container">
                                 <v-row>
                                     <v-col  class=" d-flex justify-start mb-6"cols="2" nav>
                                         <v-card>
@@ -71,10 +71,10 @@
                                         </v-card>
                                     </v-col>
                                     {% block main %}
-                                    <v-col class=" d-flex justify-space-around mb-2" cols="5">                                            
+                                    <v-col class=" d-flex justify-space-around mb-2" cols="6">                                            
                                                     {% block calendar %}
                                                     {% endblock %}
-                                            <v-col class=" d-flex justify-space-around mb-2" cols="5">
+                                            <v-col class=" d-flex justify-space-around mb-2" cols="4">
                                                 {% block content %}
                                                 {% endblock %}
                                             </v-col>
@@ -136,7 +136,7 @@
                         url: 'history/'
                     }).then(response => {
                         const entries = response.data.entries
-                        entries.objects.order_by('-create_date')
+                        entries.objects.order_by('-create_date') // this is django syntax
                     })
                 },
                 get_tasks () {

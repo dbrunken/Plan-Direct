@@ -3,3 +3,6 @@
     left: 0;
 }
 
+#main-container {
+    min-width: 90%;
+}
