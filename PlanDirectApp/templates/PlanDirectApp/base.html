@@ -17,7 +17,9 @@
     <!--css sheet-->
     <link rel="stylesheet" href="{% static 'PlanDirectApp/style.css' %}">
 
+    {% block title %}
     <title>Plan Direct</title>
+    {% endblock %}
 </head>
 
 <body>
@@ -68,6 +70,7 @@
                                             </v-navigation-drawer>
                                         </v-card>
                                     </v-col>
+                                    {% block main %}
                                     <v-col class=" d-flex justify-space-around mb-2" cols="5">                                            
                                                     {% block calendar %}
                                                     {% endblock %}
@@ -77,6 +80,7 @@
                                             </v-col>
                                         </v-row>
                                     </v-col>
+                                    {% endblock %}
                                 </v-row>
                         </v-container>
                     </div>
@@ -105,6 +109,7 @@
                 selectedEvent: {},
                 selectedElement: null,
                 selectedOpen: false,
+                entries: [],
                 events: [],
                 color: '',
                 name: '',
@@ -124,6 +129,15 @@
                     this.focus = event.date
                     this.type = 'day'
                     
+                },
+                get_entries() {
+                    axios({
+                        method: 'GET',
+                        url: 'history/'
+                    }).then(response => {
+                        const entries = response.data.entries
+                        entries.objects.order_by('-create_date')
+                    })
                 },
                 get_tasks () {
                     axios({

@@ -32,11 +32,19 @@ def new_entry(request):
 
 @login_required
 def history(request):
-    entries = Entry.objects.order_by('-created_date')
-    context = {
-        'entries': entries
+    entry_objects = Entry.objects.all()
+    entries = []
+    for entry_object in entry_objects:
+        entry = {
+            'id':entry_object.id,
+            'entry':entry_object.text,
+            'created_date':entry_object.created_date
+        }
+        entries.append(entry)
+    data = {
+        'entries':entries
     }
-    return render(request, 'PlanDirectApp/history.html', context)
+    return JsonResponse(data)
 
 @login_required
 def new_task(request):
