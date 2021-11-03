@@ -137,7 +137,10 @@
                         url: 'history/'
                     }).then(response => {
                         const entries = response.data.entries
-                        entries.objects.order_by('-create_date') // this is django syntax
+                        entries.forEach(entry => {
+                            entry.date = entry.created_date
+                        })
+                        this.entries = entries
                     })
                 },
                 get_tasks () {
