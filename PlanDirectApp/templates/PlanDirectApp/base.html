@@ -26,11 +26,11 @@
     <main>
         <div id="app">
             <v-app>
-                <div>
-                    <div class="d-flex justify-center">
-                        <v-container class="main ma-0" id="main-container">
+                <div class="d-flex justify-space between">
+                    <div class="d-flex fill-height">
+                        <v-container class="main ma-0 fill-height" id="main-container">
                                 <v-row>
-                                    <v-col  class=" d-flex justify-start mb-6"cols="2" nav>
+                                    <v-col  class="d-flex justify-space-between mb-6"cols="2" nav>
                                         <v-card>
                                             <v-navigation-drawer permanent expand-on-hover>
                                                 <v-list>
@@ -84,6 +84,7 @@
                                 </v-row>
                         </v-container>
                     </div>
+                </div>
             </v-app>
         </div>
     </main>
@@ -252,6 +253,7 @@
             },
             created() {
                 this.get_tasks()
+                this.get_entries()
             }
         })
     </script>

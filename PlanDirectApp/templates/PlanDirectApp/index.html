@@ -15,20 +15,19 @@
         </div>
     </div>
     <div>
-        <label for="post" >Put your thougths down here:</label>
-        <div>
-            <input type="text" name="entry" id="entry">
-        </div>
-        <div>
-            <button type="submit">Save Entry</button>
+        <label for="post">Put your thougths down here:
+                <v-btn type="submit" color="primary" elevation="4" small>Save Entry</v-btn>
+        </label>   
+        <div class="mt-4">
+            <v-text-field type="text" name="entry" id="entry" label="Entry" outlined>
         </div>
     </div>
+    <v-container>
+        {% for entry in entries%}
+        <div>{{ entry }}</div>
+        {% endfor %}
+    </v-container>
 </form>
-<v-container>
-    {% for entry in entries%}
-    <div>{{ entry }}</div>
-    {% endfor %}
-</v-container>
 {% endblock %}
 
 {% block calendar%}
