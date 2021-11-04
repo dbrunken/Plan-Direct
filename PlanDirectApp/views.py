@@ -30,8 +30,10 @@ def new_entry(request):
         )
         return redirect('PlanDirectApp:index')
 
+@login_required
 def history(request):
-    pass # render your history template
+        
+    return render(request, 'PlanDirectApp/history.html')
 
 @login_required
 def get_history(request):
@@ -40,7 +42,7 @@ def get_history(request):
     for entry_object in entry_objects:
         entry = {
             'id':entry_object.id,
-            'entry':entry_object.text,
+            'text':entry_object.text,
             'created_date':entry_object.created_date
         }
         entries.append(entry)

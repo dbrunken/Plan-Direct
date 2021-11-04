@@ -29,10 +29,11 @@ def new_user(request):
 
         if password1 == password2:
             user = User.objects.create_user(
-                username, password1
+                username = username,
+                password = password1
             )
-
             login(request, user)
-            return redirect('PlanDirectUser: login_user')
+            return redirect('PlanDirectUser:login_user')
 
     return render(request, 'PlanDirectUser/new_user.html')
+

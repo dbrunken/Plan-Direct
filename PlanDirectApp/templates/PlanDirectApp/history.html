@@ -6,21 +6,18 @@
 
 
 {% block main %}
-<p>test</p>
-<template>
-    <v-row justify="center">
-        <v-expansion-panels popout>
+    <v-row class="d-flex justify-center">
+        <v-expansion-panels popout class="d-flex " @click="on" sstyle="width: 75%;">
         <v-expansion-panel
-            v-for="entry in entries"
+            v-for="(entry,i) in entries"
             :key="i"
         >
-            <v-expansion-panel-header>[[ entry. date ]]</v-expansion-panel-header>
-            <v-expansion-panel-content>
-            [[ entry.text ]]
+            <v-expansion-panel-header>[[ entry.date ]]</v-expansion-panel-header>
+            <v-expansion-panel-content> 
+            [[entry.text]]
             </v-expansion-panel-content>
         </v-expansion-panel>
         </v-expansion-panels>
-    </v-row>
-</template>  
+    </v-row>  
 {% endblock %}
     

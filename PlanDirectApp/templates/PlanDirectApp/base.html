@@ -30,7 +30,7 @@
     <main>
         <div id="app">
             <v-app>
-                <v-container fluid class="d-flex main ma-0 fill-height" id="main-container">
+                <v-container fluid class="d-flex main ma-0 fill-height blue-grey lighten-5" id="main-container">
                         <v-row class="d-flex justify-space-between" style="width: 100%;">
                             <v-col  class="d-flex justify-space-between mb-6"cols="2" nav>
                                 <v-card>
@@ -53,7 +53,7 @@
                                                 <v-list-item-icon>
                                                     <i class="fas fa-home"></i>
                                                 </v-list-item-icon>
-                                                <v-list-item-title>Home Page</v-list-item-title>
+                                                <a href="{% url 'PlanDirectApp:index' %}">Home Page</a>
                                             </v-list-item>
                                             <v-list-item link>
                                                 <v-list-item-icon>
@@ -65,7 +65,6 @@
                                                 <v-list-item-icon>
                                                     <i class="fas fa-history"></i>
                                                 </v-list-item-icon>
-                                                <!-- <v-list-item-title-a href="PlanDirectApp/history.html">Histroy</v-list-item-title> -->
                                                 <a href="{% url 'PlanDirectApp:history' %}">History</a>
                                             </v-list-item>
                                         </v-list>
@@ -143,7 +142,10 @@
                 selectedEvent: {},
                 selectedElement: null,
                 selectedOpen: false,
-                entries: [],
+                entries: [
+                    'entry.date',
+                    'entry.created_date'
+                ],
                 events: [],
                 color: '',
                 name: '',
@@ -160,9 +162,24 @@
                     ],
                 padless: false,
                 variant: 'absolute',
+                valid: false,
+                name: '',
+                firstname: '',
+                lastname: '',
+                nameRules: [
+                    v => !!v || 'Name is required',
+                    v => v.length <= 10 || 'Name must be less than 10 characters',
+                ],
+                email: '',
+                emailRules: [
+                    v => !!v || 'E-mail is required',
+                    v => /.+@.+/.test(v) || 'E-mail must be valid',
+                ],
+                // valid: true,
             }),
             mounted() {
-                this.$refs.calendar.checkChange()
+                this.$refs.form.validate()
+                // this.$refs.calendar.checkChange()
                 this.csrfmiddlewaretoken=document.querySelector('input[name="csrfmiddlewaretoken"]').value
             },
             methods: {
@@ -174,10 +191,13 @@
                 get_entries() {
                     axios({
                         method: 'GET',
-                        url: 'history/'
+                        url: '/get_history'
                     }).then(response => {
+                        console.log(response)
                         const entries = response.data.entries
                         entries.forEach(entry => {
+                            entry.id = entry.id,
+                            entry.text = entry.text,
                             entry.date = entry.created_date
                         })
                         this.entries = entries
@@ -186,7 +206,7 @@
                 get_tasks () {
                     axios({
                         method: 'GET',
-                        url: 'get_tasks/'
+                        url: '/get_tasks'
                     }).then(response => {
                         const tasks = response.data.tasks
                         tasks.forEach(task => {
@@ -237,9 +257,6 @@
                     axios({
                         method: 'GET',
                         url: `/delete_task/${selectedEvent}`,
-                        // params: {
-                        //     id: this.id
-                        // }
                     }).then(response => {
                         console.log(response), this.get_tasks()
                     })
@@ -292,7 +309,10 @@
                         color += letters[Math.floor(Math.random() * 16)];
                     }
                     return color
-                }
+                },
+                validate () {
+                    this.$refs.form.validate()
+                },
             },
             computed: {
                 localAttrs () {
